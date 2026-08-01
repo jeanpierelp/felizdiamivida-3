@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nuestro Universo - Mi Gran Amor</title>
+    <style>
+        /* --- Configuraciones Base --- */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #020204;
+            overflow: hidden;
+            color: white;
+            font-family: 'Georgia', serif;
+            perspective: 1200px; /* Profundidad 3D */
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* --- 1. Pantalla de Inicio (Arreglada y Flotante) --- */
+        #inicio {
+            position: fixed; /* Esto arregla el error de la pantalla blanca */
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: radial-gradient(circle at center, #110008 0%, #020204 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1.5s ease-in-out;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #texto-inicio {
+            margin-bottom: 40px; 
+            font-style: italic; 
+            color: #ffb1c8; 
+            font-weight: normal; 
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            text-shadow: 0 0 15px rgba(255, 177, 200, 0.5);
+        }
+
+        #boton-iniciar {
+            padding: 15px 35px;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            background: linear-gradient(45deg, #e63946, #b80f43);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 25px rgba(230, 57, 70, 0.8);
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            /* Aquí está la magia flotante */
+            animation: flotarBoton 2s ease-in-out infinite; 
+        }
+
+        @keyframes flotarBoton {
+            0%, 100% { transform: translateY(0) scale(1); box-shadow: 0 0 20px rgba(230, 57, 70, 0.6); }
+            50% { transform: translateY(-20px) scale(1.05); box-shadow: 0 0 40px rgba(230, 57, 70, 1); }
+        }
+
+        #universo {
+            display: none; 
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            transform-style: preserve-3d;
+            top: 0; left: 0;
+        }
+
+        /* --- 2. El Sol 3D Ultra Realista --- */
+        .sol-contenedor {
+            position: absolute;
+            width: clamp(180px, 35vw, 350px); 
+            height: clamp(180px, 35vw, 350px);
+            top: -5%; 
+            left: -5%;
+            z-index: 1;
+        }
+
+        .sol-nucleo {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 40%, #ffffff 0%, #fff200 30%, #ff8c00 80%);
+            /* Sombras internas (inset) para darle volumen de esfera 3D */
+            box-shadow: 
+                inset -30px -30px 50px rgba(200, 50, 0, 0.8), 
+                inset 10px 10px 30px rgba(255, 255, 255, 0.9),
+                0 0 60px #fce570, 
+                0 0 150px rgba(255, 140, 0, 0.6);
+            animation: latidoSol3D 4s infinite alternate ease-in-out;
+        }
+
+        @keyframes latidoSol3D {
+            0% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+            100% { transform: scale(1.02) rotate(5deg); filter: brightness(1.2); }
+        }
+
+        /* --- 3. Sistema Central (Planeta 3D Giratorio) --- */
+        #sistema-3d {
+            position: absolute;
+            top: 50%; left: 50%;
+            /* Esto le da la perspectiva 3D a todo el anillo y planeta */
+            transform: rotateX(-15deg);
+            transform-style: preserve-3d;
+            z-index: 2;
+        }
+
+        .contenedor-planeta {
+            position: absolute;
+            top: 0; left: 0;
+            transform-style: preserve-3d;
+            /* Tambaleo 3D para que parezca flotar en el espacio */
+            animation: balanceo3D 8s ease-in-out infinite;
+        }
+
+        @keyframes balanceo3D {
+            0%, 100% { transform: translateY(0) rotateX(5deg) rotateY(-5deg); }
+            50% { transform: translateY(-20px) rotateX(-5deg) rotateY(5deg); }
+        }
+
+        .planeta {
+            position: absolute;
+            width: clamp(160px, 45vw, 280px); 
+            height: clamp(160px, 45vw, 280px);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%); 
+            border-radius: 50%;
+            background-image: url('foto1.jpg'); 
+            /* Se hace más grande el fondo para poder moverlo y simular giro */
+            background-size: 130% 130%; 
+            background-position: center;
+            /* Transición suave al cambiar foto y al moverse */
+            transition: background-image 1.5s ease-in-out;
+            animation: paneoFoto 10s linear infinite alternate;
+            
+            /* Sombra interna brutal para efecto de esfera de cristal 3D */
+            box-shadow: 
+                inset -30px -30px 50px rgba(0, 0, 0, 0.8), 
+                inset 15px 15px 30px rgba(255, 255, 255, 0.4),
+                0 0 50px rgba(255, 255, 255, 0.15);
+        }
+
+        /* El movimiento de la foto simula la rotación del mundo */
+        @keyframes paneoFoto {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        .luna {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: clamp(20px, 5vw, 35px); 
+            height: clamp(20px, 5vw, 35px);
+            background: radial-gradient(circle at 30% 30%, #f0f0f0, #555);
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            animation: orbitarLuna 10s linear infinite;
+        }
+
+        /* --- 4. Anillo de Frases --- */
+        #anillo-frases {
+            position: absolute;
+            top: 0; left: 0;
+            transform-style: preserve-3d;
+            animation: rotarAnillo 25s linear infinite;
+        }
+
+        .frase {
+            position: absolute;
+            white-space: nowrap;
+            font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+            font-style: italic;
+            color: #fffafb;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(230, 57, 70, 0.8);
+            top: 50%; left: 50%;
+            backface-visibility: visible;
+        }
+
+        /* --- 5. Efectos (Fugaces y Fuegos Artificiales) --- */
+        .fugaz {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%);
+            box-shadow: 0 0 15px #fff;
+            opacity: 0; 
+            z-index: 0;
+            animation: disparo linear forwards;
+        }
+
+        .particula-fuego {
+            position: absolute;
+            width: 4px; height: 4px;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 8px currentColor;
+            animation: explotarFuego 1.2s ease-out forwards;
+            z-index: 0;
+        }
+
+        /* --- Animaciones --- */
+        @keyframes rotarAnillo { from { transform: rotateY(0deg); } to { transform: rotateY(360deg); } }
+        
+        @keyframes orbitarLuna {
+            0% { transform: translate(-50%, -50%) rotateY(0deg) translateX(clamp(120px, 35vw, 200px)) rotateY(0deg); }
+            100% { transform: translate(-50%, -50%) rotateY(360deg) translateX(clamp(120px, 35vw, 200px)) rotateY(-360deg); }
+        }
+        
+        @keyframes disparo {
+            0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 1; }
+            100% { transform: translateX(-1000px) translateY(1000px) rotate(-45deg); opacity: 0; }
+        }
+
+        @keyframes explotarFuego {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+        }
+
+        .estrella {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            z-index: -1;
+            animation: titilar infinite alternate ease-in-out;
+        }
+        @keyframes titilar {
+            0% { opacity: 0.1; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="musica-fondo" loop>
+        <source src="cancion.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="inicio">
+        <h2 id="texto-inicio">
+            ¡Feliz día mi amor!<br><br>
+            ¿Estás lista para ver nuestro universo?
+        </h2>
+        <button id="boton-iniciar">Entrar a Nuestro Universo ❤️</button>
+    </div>
+
+    <div id="universo">
+        <!-- El nuevo sol 3D -->
+        <div class="sol-contenedor">
+            <div class="sol-nucleo"></div>
+        </div>
+        
+        <div id="sistema-3d">
+            <div class="contenedor-planeta">
+                <div class="planeta" id="mi-planeta"></div>
+                <div class="luna"></div>
+            </div>
+            
+            <div id="anillo-frases"></div>
+        </div>
+    </div>
+
+    <script>
+        // Iniciar la magia
+        document.getElementById('boton-iniciar').addEventListener('click', () => {
+            document.getElementById('musica-fondo').play(); 
+            document.getElementById('inicio').style.opacity = '0';
+            document.getElementById('universo').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('inicio').style.display = 'none';
+                renderizarAnillo();
+            }, 1000);
+        });
+
+        // Frases
+        const frases = [
+            "Mi Buen Amor...", "Eres mi universo.", "Juntos en el tiempo.", 
+            "Te elegiría siempre.", "Mi Sol y estrellas.", "Feliz Día de la Novia.", 
+            "Nuestra galaxia.", "Te amo más que ayer.", "Mi refugio perfecto.", 
+            "Contigo hasta el fin.", "Siempre tú.", "Magia pura."
+        ];
+
+        // Crear anillo responsivo
+        function renderizarAnillo() {
+            const anillo = document.getElementById('anillo-frases');
+            const planeta = document.getElementById('mi-planeta');
+            anillo.innerHTML = ''; 
+            
+            const tamañoPlaneta = planeta.offsetWidth;
+            const espacioExtra = window.innerWidth < 600 ? 55 : 95;
+            const radioDinámico = (tamañoPlaneta / 2) + espacioExtra; 
+
+            frases.forEach((texto, index) => {
+                let divFrase = document.createElement('div');
+                divFrase.className = 'frase';
+                divFrase.innerText = texto;
+                let angulo = (360 / frases.length) * index;
+                divFrase.style.transform = `translate(-50%, -50%) rotateY(${angulo}deg) translateZ(${radioDinámico}px)`;
+                anillo.appendChild(divFrase);
+            });
+        }
+        window.addEventListener('resize', renderizarAnillo);
+
+        // 📸 CARRUSEL DE FOTOS 📸
+        const fotos = ['foto1.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg', 'foto5.jpg', 'foto6.jpg','foto.jpg'];
+        let fotoActual = 0;
+        const planeta = document.getElementById('mi-planeta');
+
+        setInterval(() => {
+            fotoActual = (fotoActual + 1) % fotos.length;
+            planeta.style.backgroundImage = `url('${fotos[fotoActual]}')`;
+        }, 4000); // Cambia cada 4 segundos
+
+        // 🌌 Estrellas Fijas
+        const contenedorUniverso = document.getElementById('universo');
+        for(let i = 0; i < 350; i++) {
+            let estrella = document.createElement('div');
+            estrella.className = 'estrella';
+            let tamaño = Math.random() * 2.5 + 'px';
+            estrella.style.width = tamaño; 
+            estrella.style.height = tamaño;
+            estrella.style.left = Math.random() * 100 + 'vw';
+            estrella.style.top = Math.random() * 100 + 'vh';
+            estrella.style.animationDuration = (Math.random() * 3 + 1) + 's'; 
+            contenedorUniverso.appendChild(estrella);
+        }
+
+        // 🌠 MUCHAS ESTRELLAS FUGACES
+        setInterval(() => {
+            if (contenedorUniverso.style.display !== 'none') {
+                let fugaz = document.createElement('div');
+                fugaz.className = 'fugaz';
+                // Longitud aleatoria para mayor realismo
+                fugaz.style.width = (Math.random() * 100 + 50) + 'px';
+                fugaz.style.top = (Math.random() * 50) + 'vh';
+                fugaz.style.left = (Math.random() * 60 + 40) + 'vw';
+                // Velocidad aleatoria
+                fugaz.style.animationDuration = (Math.random() * 1.5 + 1) + 's';
+                
+                contenedorUniverso.appendChild(fugaz);
+                setTimeout(() => fugaz.remove(), 2500); 
+            }
+        }, 800); // Aparece una casi cada segundo
+
+        // 🎆 FUEGOS ARTIFICIALES ESPACIALES
+        function lanzarFuegoArtificial() {
+            if (contenedorUniverso.style.display === 'none') return;
+
+            // Posición aleatoria en el fondo
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * (window.innerHeight * 0.7); // En el 70% superior
+            
+            // Colores bonitos y románticos
+            const colores = ['#ff4d79', '#ffdf00', '#00ffcc', '#ffb1c8', '#ffffff'];
+            const color = colores[Math.floor(Math.random() * colores.length)];
+
+            // Crear 30 partículas por explosión
+            for(let i = 0; i < 30; i++) {
+                let particula = document.createElement('div');
+                particula.className = 'particula-fuego';
+                particula.style.left = x + 'px';
+                particula.style.top = y + 'px';
+                particula.style.color = color;
+                particula.style.backgroundColor = color;
+                
+                // Matemáticas para disparar en círculo
+                let angulo = Math.random() * Math.PI * 2;
+                let velocidad = Math.random() * 80 + 30; // Distancia de explosión
+                let dx = Math.cos(angulo) * velocidad;
+                let dy = Math.sin(angulo) * velocidad;
+                
+                particula.style.setProperty('--dx', dx + 'px');
+                particula.style.setProperty('--dy', dy + 'px');
+                
+                contenedorUniverso.appendChild(particula);
+                
+                // Limpiar partículas de la memoria
+                setTimeout(() => particula.remove(), 1200);
+            }
+        }
+
+        // Lanza un fuego artificial cada 2 segundos
+        setInterval(lanzarFuegoArtificial, 2000); 
+    </script>
+</body>
+</html>
